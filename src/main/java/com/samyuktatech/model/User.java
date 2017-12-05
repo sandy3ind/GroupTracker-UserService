@@ -1,19 +1,23 @@
 package com.samyuktatech.model;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+
 public class User {
 
+
 	private Long id;
+	
+	@NotBlank(message = "Name can't be blank")
 	private String name;
+	
+	@NotBlank(message = "Email can't be blank")
+	@Email(message = "Email is Invalid")
 	private String email;
+	
 	private String phone;
 	private String password;	
 	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public Long getId() {
 		return id;
 	}
@@ -38,6 +42,10 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 }
