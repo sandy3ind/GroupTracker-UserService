@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class User {
 
-	private long id;
+	private Long id;
 	
 	@NotBlank(message = "Name can't be blank")
 	private String name;
@@ -17,10 +17,10 @@ public class User {
 	private String phone;
 	private String password;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getEmail() {

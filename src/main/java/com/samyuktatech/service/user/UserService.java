@@ -46,7 +46,7 @@ public class UserService {
 	public ResponseEntity<User> get() {
 		
 		User user = new User();
-		user.setId(22);
+		user.setId(22l);
 		user.setName("sandeep sharma");		
 		user.setEmail("ss@gmail.com");
 		user.setPassword("32323");
