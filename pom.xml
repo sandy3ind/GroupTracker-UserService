@@ -25,6 +25,15 @@
 	</properties>
 
 	<dependencies>
+	
+		<!-- Local dependencies -->
+		<dependency>
+			<groupId>com.samyuktatech</groupId>
+			<artifactId>GroupTracker-Comman</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	
+	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -53,6 +62,7 @@
 			<artifactId>spring-cloud-starter-eureka-server</artifactId>
 		</dependency>
 		 -->
+
 		
 	</dependencies>
 	

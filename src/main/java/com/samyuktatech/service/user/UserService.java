@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.samyuktatech.comman.util.RestUtil;
 import com.samyuktatech.model.User;
 
 @RestController
@@ -40,8 +41,15 @@ public class UserService {
 	
 	@Autowired
 	private RestTemplate restTemplate;
-
 	
+
+	/**
+	 * Save new user
+	 * 
+	 * @param user
+	 * @param errors
+	 * @return
+	 */
 	@PostMapping()
 	public ResponseEntity<?> save(@Valid @RequestBody User user, Errors errors) {
 		
@@ -55,10 +63,17 @@ public class UserService {
             return ResponseEntity.badRequest().body(msg);
 		}
 		else {
-			//TODO Save object
+			
+		    HttpEntity<User> httpEntity = RestUtil.getHttpEntityJson(user);	    
+			
+		    ResponseEntity<User> resp = restTemplate.postForEntity(mysqlServiceHost, httpEntity, User.class);
+		    
+		    if (resp.getStatusCode() == HttpStatus.CREATED) {
+		    	return ResponseEntity.ok(resp.getBody());
+		    }
 		}
 		
-		return ResponseEntity.ok(user);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		
 	}
 	
@@ -72,21 +87,6 @@ public class UserService {
 		user.setPassword("32323");
 		
 		ResponseEntity<User> response = new ResponseEntity<>(user, HttpStatus.OK);
-		
-		return response;
-		
-	}
-	
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<User> save(@RequestBody User user) {
-		
-		HttpHeaders requestHeaders = new HttpHeaders();
-	    requestHeaders.setContentType(MediaType.APPLICATION_JSON);
-	    HttpEntity<User> httpEntity = new HttpEntity<>(user, requestHeaders);
-		
-		User respUser = restTemplate.postForObject(mysqlServiceHost, httpEntity, User.class);
-				
-		ResponseEntity<User> response = new ResponseEntity<>(respUser, HttpStatus.OK);
 		
 		return response;
 		
