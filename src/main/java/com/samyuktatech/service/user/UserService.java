@@ -39,6 +39,9 @@ public class UserService {
 	@Value("${mysqlService.host}")
 	private String mysqlServiceHost;
 	
+	@Value("${searchService.host}")
+	private String searchServiceHost;
+	
 	@Autowired
 	private RestTemplate restTemplate;
 	
@@ -64,13 +67,16 @@ public class UserService {
 		}
 		else {
 			
-		    HttpEntity<User> httpEntity = RestUtil.getHttpEntityJson(user);	    
-			
-		    ResponseEntity<User> resp = restTemplate.postForEntity(mysqlServiceHost, httpEntity, User.class);
-		    
+		    HttpEntity<User> httpEntity = RestUtil.getHttpEntityJson(user);			
+		    // Save User into Mysql database
+		    ResponseEntity<User> resp = restTemplate.postForEntity(mysqlServiceHost + "/user", httpEntity, User.class);		    
 		    if (resp.getStatusCode() == HttpStatus.CREATED) {
-		    	return ResponseEntity.ok(resp.getBody());
-		    }
+		    	// Save User into Elasticsearch
+		    	ResponseEntity<String> resp1 = restTemplate.postForEntity(searchServiceHost, httpEntity, String.class);
+		    	if (resp1.getStatusCode() == HttpStatus.CREATED) {
+		    		return ResponseEntity.ok(resp.getBody());
+		    	}
+		    }		    
 		}
 		
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
